@@ -1,0 +1,6 @@
+__pycache__
+*.py[cod]
+test.py
+test2.py
+.idea
+coordinat.csv
