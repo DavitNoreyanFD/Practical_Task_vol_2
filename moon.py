@@ -31,7 +31,7 @@ class Moon:
         self.dec_start = float(dec_start_list[0]) * 3600 + float(dec_start_list[1]) * 60 + float(dec_start_list[2])
         self.ra_dec_min = float(ra_dec_min_list[0]) * 3600*15  + float(ra_dec_min_list[1]) * 60 + float(ra_dec_min_list[2])
         self.ra_dec_max = float(ra_dec_max_list[0]) * 3600*15  + float(ra_dec_max_list[1]) * 60 + float(ra_dec_max_list[2])
-    def moon_ra_dec_calculate(self):
+    def ra_dec_calculate(self):
 
         for sec in range(self.delta_time):
             if 0 <= self.ra_start + self.one_sec_walk_ra < 360 * 3600:
@@ -62,7 +62,7 @@ class Moon:
         return 'moon ra is a  ' + ra_res + '--' + 'moon dec is a ' + dec_res
 
 moon_obj = Moon(datetime.datetime.now())
-print(moon_obj.moon_ra_dec_calculate())
+print(moon_obj.ra_dec_calculate())
 
 moon_test = ephem.Moon()
 moon_test.compute()
