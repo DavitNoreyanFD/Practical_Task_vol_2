@@ -21,8 +21,9 @@ class Moon:
         period_for_on_cycle = constants.period_for_on_cycle
         perimeter = constants.perimeter
         self.one_sec_walk = perimeter / period_for_on_cycle
+        dec_angle_slope_interval = 2 * self.angle_slope
         self.one_sec_walk_ra = math.cos(self.angle_slope) * self.one_sec_walk
-        self.one_sec_walk_dec = math.sin(self.angle_slope) * self.one_sec_walk
+        self.one_sec_walk_dec = dec_angle_slope_interval / period_for_on_cycle
         moon = ephem.Moon()
         moon.compute(constants.start_date)
         ra_ephem_start = moon.ra
@@ -41,28 +42,19 @@ class Moon:
             ra_dec_max_list[2])
 
     def ra_dec_calculate(self):
-
         for sec in range(self.delta_time):
-            if 0 <= self.ra_start + self.one_sec_walk_ra < 360 * 3600:
+            if 0 < self.ra_start + self.one_sec_walk_ra < 360 * 3600:
                 self.ra = self.ra_start + self.one_sec_walk_ra
                 self.ra_start = self.ra
             else:
                 self.ra = self.ra_start + self.one_sec_walk_ra - 360 * 3600
                 self.ra_start = self.ra
-            if 0 <= self.dec_start:
-                if self.ra_dec_min <= self.ra < self.ra_dec_max:
-                    self.dec = self.dec_start - self.one_sec_walk_dec
-                    self.dec_start = self.dec
-                else:
-                    self.dec = self.dec_start + self.one_sec_walk_dec
-                    self.dec_start = self.dec
-            elif self.dec_start < 0:
-                if self.ra_dec_min < self.ra <= self.ra_dec_max:
-                    self.dec = self.dec_start + self.one_sec_walk_dec
-                    self.dec_start = self.dec
-                else:
-                    self.dec = self.dec_start - self.one_sec_walk_dec
-                    self.dec_start = self.dec
+            if self.ra_dec_min < self.ra < self.ra_dec_max:
+                self.dec = self.dec_start - self.one_sec_walk_dec
+                self.dec_start = self.dec
+            else:
+                self.dec = self.dec_start + self.one_sec_walk_dec
+                self.dec_start = self.dec
 
         ra_res = f'{int(self.ra // (3600 * 15))}:{int((self.ra % 3600) // 60)}:' \
                  f'{round(float((self.ra % 3600) % 60), 1)}'
