@@ -1,6 +1,7 @@
-__pycache__
+# Byte-compiled / optimized / DLL files
+__pycache__/
 *.py[cod]
-test.py
-test2.py
+# Pycharm IDE files
 .idea
-coordinat.csv
+# files for testing
+test.py
