@@ -1,3 +1,7 @@
+"""
+weboketserver module is the logic of the server for responding to requests, 3 functions are written here content,
+handle and running_func
+"""
 import websockets
 import logging
 import datetime
@@ -49,7 +53,9 @@ def websocket_running_func(ip: str, prt: int) -> None:
     """
     try:
         ngrok_tunnel = ngrok.connect(prt)
-        logging.info(f' ngrok tunnel is : {ngrok_tunnel.public_url}')
+        ngrok_tunnel_name = f'{ngrok_tunnel.public_url}'[7:]
+        logging.info(f'ngrok tunnel with http protocol is: {ngrok_tunnel.public_url}')
+        logging.info(f' ngrok tunnel with ws protocol is: ws://{ngrok_tunnel_name}')
         start_server = websockets.serve(handle, ip, prt)
         asyncio.get_event_loop().run_until_complete(start_server)
         asyncio.get_event_loop().run_forever()
